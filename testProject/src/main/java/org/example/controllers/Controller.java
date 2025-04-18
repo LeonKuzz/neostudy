@@ -4,14 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.services.OtpuskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/calculacte")
@@ -19,8 +14,8 @@ import java.time.format.DateTimeFormatter;
 public class Controller {
     private final OtpuskService service;
 
-    @GetMapping("{str}")
-    public ResponseEntity<?> calculate(@PathVariable String str) {
+    @GetMapping
+    public ResponseEntity<?> calculate(@RequestBody String str) {
         String[] arr = str.split(" ");
         try {
 
@@ -28,11 +23,13 @@ public class Controller {
                 double wages = Double.parseDouble(arr[0]);
                 int days = Integer.parseInt(arr[1]);
                 return new ResponseEntity<>(service.getMoney(wages, days), HttpStatus.OK);
-            } else {
+            } else if (arr.length == 3) {
                 double wages = Double.parseDouble(arr[0]);
                 LocalDate firstDay = LocalDate.parse(arr[1]);
                 LocalDate lastDay = LocalDate.parse(arr[2]);
                 return new ResponseEntity<>(service.getMoney(wages, firstDay, lastDay), HttpStatus.OK);
+            } else {
+                throw new RuntimeException();
             }
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Неверный формат ввода. допустим один из вариантов: \n" +

@@ -17,7 +17,7 @@ public class OtpuskServiceTest {
 
     @Test
     void whenTheNumberOfDaysIsSpecified () {
-        int income = 300000;
+        double income = 300000.0;
         int days = 7;
         double actual = service.getMoney(income, days);
         double expected = Math.ceil(income / 12 / 29.3 * days * 100) / 100;
@@ -25,7 +25,7 @@ public class OtpuskServiceTest {
     }
     @Test
     void WhenAVacationIsNotAHoliday () {
-        int income = 300000;
+        double income = 300000.0;
         LocalDate d1 = LocalDate.of(2005, 2, 1);
         LocalDate d2 = LocalDate.of(2005, 2, 7);
         double actual = service.getMoney(income, d1, d2);
@@ -34,7 +34,7 @@ public class OtpuskServiceTest {
     }
     @Test
     void WhenAVacationIsAHoliday () {
-        int income = 300000;
+        double income = 300000.0;
         LocalDate d1 = LocalDate.of(2005, 2, 21);
         LocalDate d2 = LocalDate.of(2005, 2, 27);
         double actual = service.getMoney(income, d1, d2);
